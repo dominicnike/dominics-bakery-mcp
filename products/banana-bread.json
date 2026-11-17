@@ -1,0 +1,7 @@
+{
+  "id": "banana-bread",
+  "name": "Banana Bread",
+  "category": "bread",
+  "price": 7.25,
+  "in_stock": true
+}

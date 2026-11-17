@@ -1,0 +1,7 @@
+{
+  "id": "whole-wheat-bread",
+  "name": "Whole Wheat Bread",
+  "category": "bread",
+  "price": 5.0,
+  "in_stock": true
+}
