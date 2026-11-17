@@ -126,7 +126,7 @@ az account show --query "{name:name, id:id}" -o table   # confirm the right subs
 ## Step 1 – Get the code & create a Python environment
 
 ```powershell
-git clone https://github.com/joeokpala/dominics-bakery-mcp.git
+git clone https://github.com/dominicnike/dominics-bakery-mcp.git
 cd dominics-bakery-mcp
 
 py -3.13 -m venv .venv
