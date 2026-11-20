@@ -15,6 +15,8 @@ This repository is a **complete, step-by-step record** of a live classroom demo.
 Every command below is one that **was actually run successfully** during the demo, together with the output you should expect and the fixes for every error we hit.
 
 > 🎥 Based on the video: <https://youtu.be/cDGBGHXal9M>
+>
+> 🎬 **Teaching live?** Use the short checklist version: **[DEMO-RUNBOOK.md](DEMO-RUNBOOK.md)** (Step → Go to → Confirm → Next step).
 
 ---
 
