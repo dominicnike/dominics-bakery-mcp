@@ -2,6 +2,7 @@
 
 A step-by-step script for the class demo. Each step tells you:
 
+- 💡 **What this step does**: a one-line, plain-English explanation
 - 🎬 **DO**: what to click or type
 - 📍 **GO TO**: where to look
 - ✅ **CONFIRM**: what you must see before moving on
@@ -11,6 +12,33 @@ A step-by-step script for the class demo. Each step tells you:
 > Copy **only** the lines inside the grey code boxes, and run them **one at a time** in the **VS Code terminal (PowerShell)**.
 
 Total time: **about 60–75 minutes**.
+
+---
+
+## 🧁 The big picture (read this to the class first)
+
+**Dominic's Bakery is a pretend business.** We're building an **AI receptionist** that can read the bakery's menu and take orders by safely using the bakery's computer system.
+
+| Real bakery | In our project |
+|---|---|
+| 📋 Menu with prices | 10 product files (`products\*.json`) stored in Azure Storage |
+| 📒 Order book | The `orders` folder in Azure Storage |
+| 👩‍🍳 Kitchen rules ("look up the price, write the order") | `function_app.py`, plain Python code that is **not** AI |
+| 🙋 Receptionist who talks to customers | The **AI**: GitHub Copilot or the Foundry agent |
+| 🔑 Lock on the back door | The key (`x-functions-key`) |
+
+**Key words:**
+- **MCP (Model Context Protocol):** a standard "plug" that lets any AI app use any set of tools, like USB for AI.
+- **MCP server:** our program that offers the tools (`list_products`, `place_order`, `list_orders` and `hello_mcp`).
+- **Tool:** one action the AI is allowed to do.
+- **Azure Functions:** runs our code in the cloud without us managing a server.
+- **Microsoft Foundry:** where we build the AI agent.
+
+**The journey:**
+1. 🖥️ Build and test on our PC (Steps 1–11).
+2. ☁️ Move it to Azure (Steps 12–17).
+3. 🤖 Connect an AI agent in Foundry (Steps 18–22).
+4. 🧹 Clean up (Step 23).
 
 ---
 
@@ -34,6 +62,8 @@ Write these names on a sticky note. You'll type them many times.
 ---
 
 ## STEP 1: Check the tools on your PC (video: prerequisites)
+
+> 💡 **What this step does:** We check that the 4 programs we need are installed: **Python** (the language our code is written in), **Func Core Tools** (runs Azure Functions on your PC), **Azure CLI** (lets us control Azure by typing commands) and **Node.js** (needed for the MCP Inspector test tool).
 
 🎬 **DO:** open **VS Code**, then **Terminal → New Terminal**, and run:
 
@@ -74,6 +104,8 @@ Then **close VS Code completely (File → Exit)**, reopen it, and run Step 1 aga
 
 ## STEP 2: Open the project
 
+> 💡 **What this step does:** We open the bakery project in VS Code. This folder holds all the code (`function_app.py`), the menu files (`products`) and the settings.
+
 🎬 **DO:**
 
 ```powershell
@@ -94,6 +126,8 @@ code .
 ---
 
 ## STEP 3: Sign in to Azure
+
+> 💡 **What this step does:** We sign in to our Azure account from the terminal, so the commands we type later are allowed to create and manage things in **our** subscription.
 
 🎬 **DO:**
 
@@ -126,6 +160,8 @@ az login --tenant 51abf51d-04ca-4e54-9418-fe1979e43fbb --use-device-code
 
 ## STEP 4: Create the resource group (Portal)
 
+> 💡 **What this step does:** A **resource group** is like a labelled box in Azure. Everything we create today goes inside it, so after class we can delete the whole box in one go.
+
 🎬 **DO:**
 
 1. Open <https://portal.azure.com>.
@@ -143,6 +179,8 @@ az login --tenant 51abf51d-04ca-4e54-9418-fe1979e43fbb --use-device-code
 ---
 
 ## STEP 5: Create the storage account (Portal)
+
+> 💡 **What this step does:** A **storage account** is our bakery's online filing cabinet in Azure. It holds the menu (products) and the order book (orders).
 
 🎬 **DO:**
 
@@ -167,6 +205,8 @@ az login --tenant 51abf51d-04ca-4e54-9418-fe1979e43fbb --use-device-code
 
 ## STEP 6: Create containers and upload products (Portal)
 
+> 💡 **What this step does:** **Containers** are folders inside the filing cabinet. `products` is the menu, where we upload the 10 product files. `orders` is the empty order book that the AI will fill in.
+
 🎬 **DO:**
 
 1. In the storage account, go to **Data storage → Containers → + Container**. Enter the name **`products`** and click **Create**.
@@ -183,6 +223,8 @@ az login --tenant 51abf51d-04ca-4e54-9418-fe1979e43fbb --use-device-code
 ---
 
 ## STEP 7: Connect the code to storage
+
+> 💡 **What this step does:** The **connection string** is the address and password of the filing cabinet. We paste it into `local.settings.json` so our code on the PC knows where the menu and order book are.
 
 🎬 **DO:**
 
@@ -207,6 +249,8 @@ az login --tenant 51abf51d-04ca-4e54-9418-fe1979e43fbb --use-device-code
 ---
 
 ## STEP 8: Create the Python environment and install packages
+
+> 💡 **What this step does:** A **virtual environment** (`.venv`) is a private toolbox just for this project. `pip install` puts the libraries our code needs (Azure Functions and Azure Storage) into that toolbox.
 
 🎬 **DO** (one line at a time):
 
@@ -237,6 +281,8 @@ pip install -r requirements.txt
 ---
 
 ## STEP 9: Run the MCP server locally
+
+> 💡 **What this step does:** `func start` switches our bakery **MCP server** on, on our own PC. It now offers 4 tools (hello, list products, place order and list orders) at a local web address that AI apps can call.
 
 🎬 **DO:**
 
@@ -273,6 +319,8 @@ func start
 ---
 
 ## STEP 10: Test locally in VS Code Copilot Chat
+
+> 💡 **What this step does:** We let **GitHub Copilot** (an AI) use our tools. `mcp.json` tells VS Code where our server is. When we chat, Copilot decides which tool to call. It's the AI receptionist using our bakery system.
 
 🎬 **DO:**
 
@@ -314,6 +362,8 @@ List the orders.
 
 ## STEP 11: Test locally with the MCP Inspector
 
+> 💡 **What this step does:** The **MCP Inspector** is a testing tool **without AI**. We click the tools ourselves to prove they work on their own, like testing the kitchen without the waiter.
+
 🎬 **DO:** open a **second terminal** with the **+** in the terminal panel. Keep `func start` running in the first one. Then run:
 
 ```powershell
@@ -342,6 +392,8 @@ In the Inspector:
 
 ## STEP 12: Create the Function App (Portal)
 
+> 💡 **What this step does:** So far the server only runs on our PC and stops when the PC is off. A **Function App** is a home for our code in the Azure cloud, so it runs 24/7 and anyone with the key can reach it.
+
 🎬 **DO:**
 
 1. In the Portal, search **Function App** and click **+ Create**.
@@ -368,6 +420,8 @@ In the Inspector:
 
 ## STEP 13: Check the app settings
 
+> 💡 **What this step does:** **App settings** are the cloud version of `local.settings.json`. We check that the Function App knows the address of our filing cabinet (`AzureWebJobsStorage`).
+
 🎬 **DO** in the VS Code terminal:
 
 ```powershell
@@ -389,6 +443,8 @@ AzureWebJobsStorage
 ---
 
 ## STEP 14: Deploy the code to Azure
+
+> 💡 **What this step does:** **Publish** copies our code from the PC up into the Function App. After this, the bakery MCP server is live on the internet.
 
 🎬 **DO:** check that **`(.venv)`** shows in the prompt, then run:
 
@@ -419,6 +475,8 @@ Functions in func-dominics-bakery-demo:
 
 ## STEP 15: Prove the server is protected and get the key
 
+> 💡 **What this step does:** First we prove the cloud server is **locked** (401 means "not allowed"). Then we get the **key**, the password that AI apps must send to use our tools.
+
 🎬 **DO:** run the command below, replacing `<DEFAULT-DOMAIN>` with your domain from Step 12:
 
 ```powershell
@@ -442,6 +500,8 @@ az functionapp keys list -g rg-dominics-bakery -n func-dominics-bakery-demo --qu
 ---
 
 ## STEP 16: Test the remote server in VS Code
+
+> 💡 **What this step does:** This is the same test as Step 10, but now VS Code talks to the **cloud** server (with the key) instead of our PC. It proves the deployment works.
 
 🎬 **DO:**
 
@@ -471,6 +531,8 @@ List the orders for Dominic's Bakery.
 
 ## STEP 17: Test the remote server in the MCP Inspector
 
+> 💡 **What this step does:** This is the same test as Step 11, but against the **cloud** server. We show that it fails without the key and works with it.
+
 🎬 **DO:**
 
 ```powershell
@@ -493,6 +555,8 @@ npx @modelcontextprotocol/inspector
 
 ## STEP 18: Create the Foundry project
 
+> 💡 **What this step does:** **Microsoft Foundry** is Microsoft's website for building AI agents. A **project** is our workspace there for the bakery agent.
+
 🎬 **DO:**
 
 1. Open <https://ai.azure.com> and sign in with the same account.
@@ -511,6 +575,8 @@ npx @modelcontextprotocol/inspector
 ---
 
 ## STEP 19: Deploy the model gpt-5.4-mini
+
+> 💡 **What this step does:** An agent needs a **brain**, which is an AI model. We deploy `gpt-5.4-mini`, which understands customers' messages and decides which bakery tool to use.
 
 🎬 **DO:** in Foundry, go to **Discover → Models** (or **Models → Deploy a model**). Search **`gpt-5.4-mini`**, click **Deploy**, choose **Global Standard**, and click **Deploy**.
 
@@ -535,6 +601,8 @@ az cognitiveservices account deployment create -g rg-dominics-bakery -n <RESOURC
 ---
 
 ## STEP 20: Create the agent and add the MCP tool
+
+> 💡 **What this step does:** We create the **agent** (our AI receptionist), give it **instructions** (its job description) and connect our bakery MCP server as its **tool**, with the key so it's allowed in.
 
 🎬 **DO:**
 
@@ -577,6 +645,8 @@ Only offer products returned by the list_products tool.
 
 ## STEP 21: Test the agent in the Playground
 
+> 💡 **What this step does:** We chat with the agent the way a customer would. It reads the menu and writes real orders by calling our tools, and we approve each action first.
+
 🎬 **DO:** in the agent **Playground**, click **⊕ New chat** and send:
 
 ```text
@@ -611,6 +681,8 @@ Show me all the orders.
 
 ## STEP 22: Security and governance (end of video)
 
+> 💡 **What this step does:** We show how to keep the agent **safe**: limit **which** tools it can use, and require a human to **approve** before it changes anything.
+
 🎬 **DO:** in the agent, go to **Tools**, then click **dominics-bakery-mcp** (or ⋯ → **Edit**).
 
 1. **Restrict tools:** set **Allowed tools** to only `list_products` and `list_orders`, then **Save**.
@@ -626,6 +698,8 @@ Show me all the orders.
 ---
 
 ## STEP 23: Clean up after class (stops all charges)
+
+> 💡 **What this step does:** Azure charges for resources while they exist. Deleting the resource group (the labelled box) removes everything we created today.
 
 🎬 **DO:**
 
