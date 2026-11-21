@@ -425,7 +425,16 @@ List the orders.
 ✅ **CONFIRM:** one new order file is there. 🎓 *"The AI just wrote real data through our tool."*
 
 ❌ **IF NOT:**
-- If you see **Error** above the server, make sure `func start` is still running and click **Start** again. Click **Error** to read the log.
+- **"Error" above the server (most common).** VS Code tried to connect **before** `func start` was ready, and the old error stays on screen. Fix:
+  1. Check that the terminal running `func start` shows **"Worker process started and initialized."**
+  2. Check that the server answers. In a **second** terminal, run the command below. It must print `200`:
+
+     ```powershell
+     (Invoke-WebRequest -UseBasicParsing http://localhost:7071/runtime/webhooks/mcp -Method Post -ContentType "application/json" -Headers @{Accept="application/json, text/event-stream"} -Body '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"t","version":"1"}}}').StatusCode
+     ```
+  3. Press **Ctrl+Shift+P**, run **MCP: List Servers**, pick `my-mcp-local-server`, then **Restart Server**. (If it still fails, click **Error → Show Output** to read the log.)
+- **Don't add the same local URL twice** under different names. One local entry is enough; duplicates give Copilot duplicate tools.
+- **Golden rule:** start `func start` **first**, wait for "Worker process started", **then** click Start in `mcp.json`.
 - Ignore *"Foundry MCP … sign in"*. It comes from another extension.
 
 👉 **Go to Step 11.**
