@@ -360,9 +360,43 @@ func start
 
 > 💡 **What this step does:** We let **GitHub Copilot** (an AI) use our tools. `mcp.json` tells VS Code where our server is. When we chat, Copilot decides which tool to call. It's the AI receptionist using our bakery system.
 
-🎬 **DO:**
+🎬 **DO (part A: add the local server to `mcp.json`, as in the video):**
 
-1. Open **`.vscode\mcp.json`**.
+> If `.vscode\mcp.json` already lists `my-mcp-local-server`, you can skip part A. To show students how it's built, delete the file first and do part A live.
+
+1. Press **Ctrl+Shift+P**, type **MCP: Add Server**, and press **Enter**.
+   - Or open `.vscode\mcp.json` and click the blue **Add Server…** button at the bottom right.
+2. Choose **HTTP (HTTP or Server-Sent Events)**.
+3. In the URL box at the top, type the address and press **Enter**:
+
+   ```text
+   http://localhost:7071/runtime/webhooks/mcp
+   ```
+4. In the **Server ID** box, type the name and press **Enter**:
+
+   ```text
+   my-mcp-local-server
+   ```
+5. If asked where to save it, choose **Workspace** (it saves to `.vscode\mcp.json` in this project).
+
+✅ **CONFIRM:** `.vscode\mcp.json` opens and contains:
+
+```json
+{
+	"servers": {
+		"my-mcp-local-server": {
+			"url": "http://localhost:7071/runtime/webhooks/mcp",
+			"type": "http"
+		}
+	}
+}
+```
+
+🎓 **SHOW STUDENTS:** *"`7071` is the port `func start` printed in Step 9. This file tells VS Code where our MCP server lives."*
+
+🎬 **DO (part B: start it and chat):**
+
+1. Make sure `func start` from Step 9 is **still running** in the terminal.
 2. Above **`"my-mcp-local-server"`**, click **▷ Start**.
    - If there's no Start link, press **Ctrl+Shift+P**, run **MCP: List Servers**, pick `my-mcp-local-server`, then **Start Server**.
 3. Open **Copilot Chat** (**Ctrl+Alt+I**), click **+** (new chat), and choose **Agent** mode.
@@ -544,8 +578,33 @@ az functionapp keys list -g rg-dominics-bakery -n func-dominics-bakery-demo --qu
 🎬 **DO:**
 
 1. Open **`.vscode\mcp.json`** and click **Stop** above `my-mcp-local-server`.
-2. In the `"my-remote-mcp-server"` → `"url"` line, replace the old domain with **your new Default domain**. Keep `/runtime/webhooks/mcp` at the end.
-3. Save with **Ctrl+S**.
+2. **Add the remote server** (skip if `my-remote-mcp-server` is already in the file):
+   - Click **Add Server…** (or **Ctrl+Shift+P → MCP: Add Server**) and choose **HTTP**.
+   - URL: `https://<your-default-domain>/runtime/webhooks/mcp`
+   - Server ID: `my-remote-mcp-server`, then choose **Workspace**.
+   - Then add the key header and the `inputs` section **by hand** so the file looks like this (everything after `"type": "http"` is new):
+
+   ```json
+   "my-remote-mcp-server": {
+       "url": "https://<your-default-domain>/runtime/webhooks/mcp",
+       "type": "http",
+       "headers": {
+           "x-functions-key": "${input:functions-mcp-extension-system-key}"
+       }
+   }
+   ```
+   ```json
+   "inputs": [
+       {
+           "type": "promptString",
+           "id": "functions-mcp-extension-system-key",
+           "description": "Azure Functions mcp_extension system key",
+           "password": true
+       }
+   ]
+   ```
+   `"inputs"` goes at the same level as `"servers"` (after its closing `}` and a comma).
+3. If the server was already there, just replace the old domain in its `"url"` line with **your new Default domain**. Keep `/runtime/webhooks/mcp` at the end. Save with **Ctrl+S**.
 4. Press **Ctrl+Shift+P** and run **MCP: Reset Cached Inputs**. This clears the old key.
 5. Click **▷ Start** above `my-remote-mcp-server`, paste the **key** from Step 15 into the box at the top, and press **Enter**.
 6. In Copilot Chat, click **+** (new chat), choose **Agent** mode, run **Chat: Configure Tools**, and tick **only `my-remote-mcp-server`**.
