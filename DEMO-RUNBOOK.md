@@ -89,14 +89,43 @@ node --version
 | `az --version` | `azure-cli 2.x` |
 | `node --version` | `v18` or higher |
 
-❌ **IF NOT:**
+❌ **IF NOT:** install only what is missing. Run each command in a terminal, and accept any **Yes / license** prompts.
+
+| Missing tool | Install command |
+|---|---|
+| Python 3.13 | `winget install -e --id Python.Python.3.13` |
+| Azure Functions Core Tools v4 | `winget install -e --id Microsoft.Azure.FunctionsCoreTools` |
+| Azure CLI | `winget install -e --id Microsoft.AzureCLI` |
+| Node.js (LTS) | `winget install -e --id OpenJS.NodeJS.LTS` |
+| Git (needed to download the project in Step 2) | `winget install -e --id Git.Git` |
+| VS Code (if not installed) | `winget install -e --id Microsoft.VisualStudioCode` |
+
+Or install everything in one go (already-installed tools are simply skipped):
 
 ```powershell
-winget install -e --id Python.Python.3.13
-winget install -e --id Microsoft.Azure.FunctionsCoreTools
+winget install -e --id Python.Python.3.13 --accept-package-agreements --accept-source-agreements
+winget install -e --id Microsoft.Azure.FunctionsCoreTools --accept-package-agreements --accept-source-agreements
+winget install -e --id Microsoft.AzureCLI --accept-package-agreements --accept-source-agreements
+winget install -e --id OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements
+winget install -e --id Git.Git --accept-package-agreements --accept-source-agreements
 ```
 
-Then **close VS Code completely (File → Exit)**, reopen it, and run Step 1 again.
+Then add the VS Code extensions the demo uses (Python, Azure Functions, GitHub Copilot Chat):
+
+```powershell
+code --install-extension ms-python.python
+code --install-extension ms-azuretools.vscode-azurefunctions
+code --install-extension GitHub.copilot-chat
+```
+
+Then **close VS Code completely (File → Exit)**, reopen it, and run Step 1 again. The new tools only appear in a fresh terminal.
+
+> 🛟 **If `winget` is not recognised:** install **App Installer** from the Microsoft Store, or download the tools manually:
+> [Python 3.13](https://www.python.org/downloads/) (tick **Add python.exe to PATH**) ·
+> [Functions Core Tools](https://learn.microsoft.com/azure/azure-functions/functions-run-local#install-the-azure-functions-core-tools) ·
+> [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli-windows) ·
+> [Node.js LTS](https://nodejs.org/) ·
+> [Git](https://git-scm.com/download/win)
 
 👉 All ✅? **Go to Step 2.**
 
@@ -108,8 +137,17 @@ Then **close VS Code completely (File → Exit)**, reopen it, and run Step 1 aga
 
 🎬 **DO:**
 
+**Students (first time only):** download the project from GitHub into your user folder:
+
 ```powershell
-cd "C:\Users\The Iortyer\dominics-bakery-mcp"
+cd $HOME
+git clone https://github.com/dominicnike/dominics-bakery-mcp.git
+```
+
+Then everyone runs:
+
+```powershell
+cd "$HOME\dominics-bakery-mcp"
 ```
 ```powershell
 code .
