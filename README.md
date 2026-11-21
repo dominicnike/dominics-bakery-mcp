@@ -448,7 +448,7 @@ The repo already contains `.vscode/mcp.json`:
 ```json
 {
   "servers": {
-    "my-mcp-local-server": {
+    "my-local-mcp-server": {
       "url": "http://localhost:7071/runtime/webhooks/mcp",
       "type": "http"
     },
@@ -469,23 +469,23 @@ The repo already contains `.vscode/mcp.json`:
 }
 ```
 
-To add it yourself exactly like in the video: **Ctrl+Shift+P → MCP: Add Server… → HTTP** → URL `http://localhost:7071/runtime/webhooks/mcp` → name `my-mcp-local-server` → **Workspace**.
+To add it yourself exactly like in the video: **Ctrl+Shift+P → MCP: Add Server… → HTTP** → URL `http://localhost:7071/runtime/webhooks/mcp` → name `my-local-mcp-server` → **Workspace**.
 
 > ⚠️ Keep **one** config file: `.vscode/mcp.json`. In the demo, *Add Server* once created a second `.mcp.json` in the project root and moved entries into it – we deleted the root file and kept `.vscode/mcp.json`.
 
 ### 7.2 Start the server in VS Code
 
 1. Open `.vscode/mcp.json`.
-2. Above `"my-mcp-local-server"` click **▷ Start** → it shows **Running · 4 tools**.
-   - No *Start* link? **Ctrl+Shift+P → MCP: List Servers → my-mcp-local-server → Start Server**.
+2. Above `"my-local-mcp-server"` click **▷ Start** → it shows **Running · 4 tools**.
+   - No *Start* link? **Ctrl+Shift+P → MCP: List Servers → my-local-mcp-server → Start Server**.
    - Shows *Error*? Make sure `func start` is running, then click **Start** again. Click **Error** to open the log.
 
 ### 7.3 Chat with the tools
 
 1. Open **Copilot Chat** (`Ctrl+Alt+I`) → start a **new chat (+)** → select **Agent** mode.
 2. Choose the tools:
-   - Older layout: click the 🛠 **tools icon** in the chat box and tick only `my-mcp-local-server`.
-   - Newer layout (no tools icon): **Ctrl+Shift+P → Chat: Configure Tools** and tick only `my-mcp-local-server`.
+   - Older layout: click the 🛠 **tools icon** in the chat box and tick only `my-local-mcp-server`.
+   - Newer layout (no tools icon): **Ctrl+Shift+P → Chat: Configure Tools** and tick only `my-local-mcp-server`.
    - Or type `#` in the chat box and pick a tool, e.g. `#list_products`.
 3. Prompts used in the demo (click **Allow / Continue** when Copilot asks to run a tool):
 
@@ -646,7 +646,7 @@ Portal alternative: **Function App → Functions → App keys → System keys �
 
 1. **Stop the local server** so you are sure the answers come from Azure:
    - Press **Ctrl+C** in the `func start` terminal.
-   - In `.vscode/mcp.json` click **Stop** above `my-mcp-local-server`.
+   - In `.vscode/mcp.json` click **Stop** above `my-local-mcp-server`.
 2. **Add / check the remote server** (as in the video): **Ctrl+Shift+P → MCP: Add Server… → HTTP** → paste
    `https://<your-function-app-default-domain>/runtime/webhooks/mcp` → name **`my-remote-mcp-server`** → **Workspace**.
    Then add the `headers` block so it looks like the `my-remote-mcp-server` entry in [Part 7.1](#71-register-the-local-server):

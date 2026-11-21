@@ -401,7 +401,7 @@ $r = Invoke-WebRequest -UseBasicParsing $u -Method Post -ContentType "applicatio
 
 🎬 **DO (part A: add the local server to `mcp.json`, as in the video):**
 
-> If `.vscode\mcp.json` already lists `my-mcp-local-server`, you can skip part A. To show students how it's built, delete the file first and do part A live.
+> If `.vscode\mcp.json` already lists `my-local-mcp-server`, you can skip part A. To show students how it's built, delete the file first and do part A live.
 
 1. Press **Ctrl+Shift+P**, type **MCP: Add Server**, and press **Enter**.
    - Or open `.vscode\mcp.json` and click the blue **Add Server…** button at the bottom right.
@@ -414,7 +414,7 @@ $r = Invoke-WebRequest -UseBasicParsing $u -Method Post -ContentType "applicatio
 4. In the **Server ID** box, type the name and press **Enter**:
 
    ```text
-   my-mcp-local-server
+   my-local-mcp-server
    ```
 5. If asked where to save it, choose **Workspace** (it saves to `.vscode\mcp.json` in this project).
 
@@ -423,7 +423,7 @@ $r = Invoke-WebRequest -UseBasicParsing $u -Method Post -ContentType "applicatio
 ```json
 {
 	"servers": {
-		"my-mcp-local-server": {
+		"my-local-mcp-server": {
 			"url": "http://localhost:7071/runtime/webhooks/mcp",
 			"type": "http"
 		}
@@ -436,10 +436,10 @@ $r = Invoke-WebRequest -UseBasicParsing $u -Method Post -ContentType "applicatio
 🎬 **DO (part B: start it and chat):**
 
 1. Make sure `func start` from Step 9 is **still running** in the terminal.
-2. Above **`"my-mcp-local-server"`**, click **▷ Start**.
-   - If there's no Start link, press **Ctrl+Shift+P**, run **MCP: List Servers**, pick `my-mcp-local-server`, then **Start Server**.
+2. Above **`"my-local-mcp-server"`**, click **▷ Start**.
+   - If there's no Start link, press **Ctrl+Shift+P**, run **MCP: List Servers**, pick `my-local-mcp-server`, then **Start Server**.
 3. Open **Copilot Chat** (**Ctrl+Alt+I**), click **+** (new chat), and choose **Agent** mode.
-4. Press **Ctrl+Shift+P**, run **Chat: Configure Tools**, and tick **only `my-mcp-local-server`**.
+4. Press **Ctrl+Shift+P**, run **Chat: Configure Tools**, and tick **only `my-local-mcp-server`**.
 5. Send each prompt and click **Allow** when asked:
 
 ```text
@@ -471,7 +471,8 @@ List the orders.
      ```powershell
      (Invoke-WebRequest -UseBasicParsing http://localhost:7071/runtime/webhooks/mcp -Method Post -ContentType "application/json" -Headers @{Accept="application/json, text/event-stream"} -Body '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"t","version":"1"}}}').StatusCode
      ```
-  3. Press **Ctrl+Shift+P**, run **MCP: List Servers**, pick `my-mcp-local-server`, then **Restart Server**. (If it still fails, click **Error → Show Output** to read the log.)
+  3. Press **Ctrl+Shift+P**, run **MCP: List Servers**, pick `my-local-mcp-server`, then **Restart Server**. (If it still fails, click **Error → Show Output** to read the log.)
+- **Stuck on "Starting" forever** (and **MCP: List Servers → Show Output** is empty): VS Code has a stuck saved state for that server name. Click **Cancel**, run **Ctrl+Shift+P → Developer: Reload Window**, and click **Start** again (click **Trust** if asked). If it still sticks, rename the server in `mcp.json` (e.g. `my-local-mcp-server` → `my-local-mcp-server2`), save, and click **Start**. A new name starts clean.
 - **Don't add the same local URL twice** under different names. One local entry is enough; duplicates give Copilot duplicate tools.
 - **Golden rule:** start `func start` **first**, wait for "Worker process started", **then** click Start in `mcp.json`.
 - Ignore *"Foundry MCP … sign in"*. It comes from another extension.
@@ -625,7 +626,7 @@ az functionapp keys list -g rg-dominics-bakery -n func-dominics-bakery-demo --qu
 
 🎬 **DO:**
 
-1. Open **`.vscode\mcp.json`** and click **Stop** above `my-mcp-local-server`.
+1. Open **`.vscode\mcp.json`** and click **Stop** above `my-local-mcp-server`.
 2. **Add the remote server** (skip if `my-remote-mcp-server` is already in the file):
    - Click **Add Server…** (or **Ctrl+Shift+P → MCP: Add Server**) and choose **HTTP**.
    - URL: `https://<your-default-domain>/runtime/webhooks/mcp`

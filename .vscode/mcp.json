@@ -1,6 +1,6 @@
 {
 	"servers": {
-		"my-mcp-local-server": {
+		"my-local-mcp-server": {
 			"url": "http://localhost:7071/runtime/webhooks/mcp",
 			"type": "http"
 		},
