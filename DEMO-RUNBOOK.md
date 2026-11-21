@@ -352,6 +352,45 @@ func start
 
 ⚠️ **Leave this terminal running** for Steps 10 and 11.
 
+### 🩺 Health check: prove the server works (show students)
+
+> 💡 **What this does:** we talk to the MCP server **directly**, with no AI in between. If these work, the server is healthy, and any later problem is in VS Code or the AI, not our code.
+
+🎬 **DO:** open a **second** terminal (**Terminal → New Terminal**; leave `func start` running) and paste these one at a time.
+
+**Check 1: is the server alive?** (must print `200`)
+
+```powershell
+$u = "http://localhost:7071/runtime/webhooks/mcp"; $h = @{Accept="application/json, text/event-stream"}
+(Invoke-WebRequest -UseBasicParsing $u -Method Post -ContentType "application/json" -Headers $h -Body '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"t","version":"1"}}}').StatusCode
+```
+
+**Check 2: what tools does it offer?** (must list 4 tools)
+
+```powershell
+$r = Invoke-WebRequest -UseBasicParsing $u -Method Post -ContentType "application/json" -Headers $h -Body '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'
+(($r.Content -split "data: ")[1] | ConvertFrom-Json).result.tools | Format-Table name, description -Wrap
+```
+
+**Check 3: call a tool and get real data** (must show the 10 products from Blob Storage)
+
+```powershell
+$r = Invoke-WebRequest -UseBasicParsing $u -Method Post -ContentType "application/json" -Headers $h -Body '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"list_products","arguments":{}}}'
+(($r.Content -split "data: ")[1] | ConvertFrom-Json).result.content[0].text | ConvertFrom-Json | Format-Table name, category, price
+```
+
+✅ **CONFIRM:** `200`, then `hello_mcp`, `list_orders`, `list_products` and `place_order`, then a table of 10 products with prices.
+
+🎓 **SHOW STUDENTS:** *"This is exactly what Copilot and Foundry send behind the scenes: `tools/list` to discover the tools, then `tools/call` to use one. The AI just picks which tool to call."* Also point at the `func start` terminal: a new log line appears for each call.
+
+❌ **IF NOT:**
+
+| You see | Meaning | Fix |
+|---|---|---|
+| *"Unable to connect to the remote server"* | `func start` is not running | Go back to the first terminal and run `func start` |
+| Check 3 returns an error about storage | Wrong or old connection string | Redo **Step 7** and restart `func start` |
+| Check 3 shows an empty list | No product files in the container | Redo **Step 6** (upload the `products` files) |
+
 👉 **Go to Step 10.**
 
 ---
